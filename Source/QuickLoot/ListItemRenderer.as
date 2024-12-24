@@ -2,7 +2,7 @@
 {
 	/* PRIVATE VARIABLES */
 	
-	private static var DEFAULT_ICON_SOURCE = "skyui/icons_item_kiltedFrog.swf";
+	private static var DEFAULT_ICON_SOURCE = "skyui/icons_item_psychosteve.swf";
 	private static var DEFAULT_ICON_LABEL = "default_misc";
 	private static var DEFAULT_ICON_COLOR = 0xFFFFFF;
 	private static var ICON_SPACING = 3;
@@ -14,6 +14,7 @@
 	private var _iconSource: String = DEFAULT_ICON_SOURCE;
 	private var _iconLabel: String = DEFAULT_ICON_LABEL;
 	private var _iconColor: Number = undefined;
+	private var _iconUseDefaultColor: Boolean = false;
 	
 	private var _selectedIcons: Array = [];
 	private var _totalIconWidth: Number = 0;
@@ -50,6 +51,7 @@
 		super();
 		
 		_lootMenu = _root.lootMenu;
+		_iconUseDefaultColor = skse.plugins.InventoryInjector.ProcessEntry == undefined;
 		
 		_iconLoader = new MovieClipLoader();
 		_iconLoader.addListener(this);
@@ -92,9 +94,6 @@
 		
 		// Call i4 if it is installed
 		skse.plugins.InventoryInjector.ProcessEntry(data);
-		if(skse.plugins.InventoryInjector.ProcessEntry) {
-			DEFAULT_ICON_SOURCE = "skyui/icons_item_psychosteve.swf";
-		}
 		
 		if(_lootMenu.showItemIcons) {
 			// Do this first, so the icon source can load
@@ -291,6 +290,9 @@
 		var colorTransform = new flash.geom.ColorTransform();
 		if(typeof(_iconColor) == "number") {
 			colorTransform.rgb = _iconColor;
+		}
+		else if(_iconUseDefaultColor) {
+			colorTransform.rgb = _lootMenu.textColorDefault;
 		}
 		
 		var transform = new flash.geom.Transform(MovieClip(icon));
