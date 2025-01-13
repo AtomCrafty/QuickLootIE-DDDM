@@ -62,6 +62,7 @@
 	
 	public function reset()
 	{
+		_visible = false;
 		_hasData = false;
 		
 		itemIcon._visible = false;
@@ -90,6 +91,7 @@
 	{
 		if (!data) return;
 		
+		_visible = true;
 		_hasData = true;
 		
 		// Call i4 if it is installed
