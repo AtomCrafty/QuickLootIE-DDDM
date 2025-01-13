@@ -132,8 +132,6 @@
 	private function arrangeInfoColumns() {
 		_totalColumnWidth = 0;
 		
-		QuickLoot.Utils.log("Columns: " + textField.text);
-		
 		for(var i = _lootMenu.infoColumns.length - 1; i >= 0; i--) {
 			var columnName = _lootMenu.infoColumns[i];
 			var element = this[columnName + "Text"];
@@ -142,8 +140,6 @@
 				element._visible = true;
 				_totalColumnWidth = _totalColumnWidth + element._width;
 				element._x = this._width - _totalColumnWidth;
-				
-				QuickLoot.Utils.log(this._width + " - " + _totalColumnWidth + " = " + element._x);
 			}
 		}
 	}
