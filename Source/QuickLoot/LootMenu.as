@@ -79,10 +79,6 @@ class QuickLoot.LootMenu extends gfx.core.UIComponent
 	}
 	
 	public function LootMenu() {
-		// The CoreList constructor sets a scale9Grid, which causes very odd
-		// behavior when changing the list size after it's created.
-		itemList["container"].scale9Grid = null;
-		itemList.rowCount = maxLines;
 		var self = this;
 		itemList.addEventListener("scrollPositionChanged", function() { self.updateScrollArrows(); });
 		
@@ -118,6 +114,11 @@ class QuickLoot.LootMenu extends gfx.core.UIComponent
 		
 		textColorDefault = parseInt(textColorStringDefault, 16);
 		textColorStealing = parseInt(textColorStringStealing, 16);
+		
+		// The CoreList constructor sets a scale9Grid, which causes very odd
+		// behavior when changing the list size after it's created.
+		itemList["container"].scale9Grid = null;
+		itemList.rowCount = maxLines;
 		
 		initColumnHeaders();
 		refresh();
