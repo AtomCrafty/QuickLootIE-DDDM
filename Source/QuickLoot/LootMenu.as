@@ -79,9 +79,6 @@ class QuickLoot.LootMenu extends gfx.core.UIComponent
 	}
 	
 	public function LootMenu() {
-		var self = this;
-		itemList.addEventListener("scrollPositionChanged", function() { self.updateScrollArrows(); });
-		
 		columnHeaders = [valueHeader, weightHeader, valuePerWeightHeader];
 		movingElements = [weight, infoBar, buttonBar, arrowDown];
 		nonTransparentElements = [buttonBar];
@@ -114,6 +111,9 @@ class QuickLoot.LootMenu extends gfx.core.UIComponent
 		
 		textColorDefault = parseInt(textColorStringDefault, 16);
 		textColorStealing = parseInt(textColorStringStealing, 16);
+		
+		var self = this;
+		itemList.addEventListener("scrollPositionChanged", function() { self.updateScrollArrows(); });
 		
 		// The CoreList constructor sets a scale9Grid, which causes very odd
 		// behavior when changing the list size after it's created.
