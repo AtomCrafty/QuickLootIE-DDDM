@@ -28,6 +28,7 @@
 	public var itemIcon: MovieClip;
 	public var itemName: TextField;
 	
+	public var bestInClassIcon: MovieClip;
 	public var stolenIcon: MovieClip;
 	public var readIcon: MovieClip;
 	
@@ -35,12 +36,15 @@
 	public var knownEnchantIcon: MovieClip;
 	public var specialEnchantIcon: MovieClip;
 	
-	public var dbmNew: MovieClip;
-	public var dbmFound: MovieClip;
-	public var dbmDisplayed: MovieClip;
+	public var artifactNew: MovieClip;
+	public var artifactFound: MovieClip;
+	public var artifactDisplayed: MovieClip;
 	
-	public var compNew: MovieClip;
-	public var compFound: MovieClip;
+	public var compNeeded: MovieClip;
+	public var compCollected: MovieClip;
+	public var compDisplayable: MovieClip;
+	public var compDisplayed: MovieClip;
+	public var compOccupied: MovieClip;
 	
 	public var weightText: TextField;
 	public var valueText: TextField;
@@ -68,6 +72,7 @@
 		itemIcon._visible = false;
 		itemName._visible = false;
 		
+		bestInClassIcon._visible = false;
 		stolenIcon._visible = false;
 		readIcon._visible = false;
 		
@@ -75,12 +80,15 @@
 		knownEnchantIcon._visible = false;
 		specialEnchantIcon._visible = false;
 		
-		dbmNew._visible = false;
-		dbmFound._visible = false;
-		dbmDisplayed._visible = false;
+		artifactNew._visible = false;
+		artifactFound._visible = false;
+		artifactDisplayed._visible = false;
 		
-		compNew._visible = false;
-		compFound._visible = false;
+		compNeeded._visible = false;
+		compCollected._visible = false;
+		compDisplayable._visible = false;
+		compDisplayed._visible = false;
+		compOccupied._visible = false;
 		
 		weightText._visible = false;
 		valueText._visible = false;
@@ -209,6 +217,7 @@
 		_selectedIcons = [];
 		_totalIconWidth = 0;
 		
+		selectIcon(bestInClassIcon, data.bestInClass);
 		selectIcon(stolenIcon, data.stolen);
 		selectIcon(readIcon, data.read);
 		
@@ -216,12 +225,15 @@
 		|| selectIcon(specialEnchantIcon, data.specialEnchanted)
 		|| selectIcon(enchantIcon, data.enchanted);
 		
-		selectIcon(dbmNew, data.dbmNew)
-		|| selectIcon(dbmDisplayed, data.dbmDisplayed)
-		|| selectIcon(dbmFound, data.dbmFound);
+		selectIcon(artifactDisplayed, data.artifactDisplayed)
+		|| selectIcon(artifactFound, data.artifactFound)
+		|| selectIcon(artifactNew, data.artifactNew);
 		
-		selectIcon(compNew, data.compNew)
-		|| selectIcon(compFound, data.compFound);
+		selectIcon(compDisplayed, data.compDisplayed)
+		|| selectIcon(compOccupied, data.compOccupied)
+		|| selectIcon(compDisplayable, data.compDisplayable)
+		|| selectIcon(compCollected, data.compCollected)
+		|| selectIcon(compNeeded, data.compNeeded);
 	}
 	
 	function selectIcon(icon: MovieClip, enable: Boolean)
