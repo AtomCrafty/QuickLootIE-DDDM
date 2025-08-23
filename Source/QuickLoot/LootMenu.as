@@ -74,8 +74,9 @@ class QuickLoot.LootMenu extends gfx.core.UIComponent
 		2: supports configurable info columns
 		3: supports showItemIcons (+bugfix)
 		4: supports reinitialization
+		5: supports Completionist museum mode icons and diamond markers
 		*/
-		return 4;
+		return 5;
 	}
 	
 	public function LootMenu() {
