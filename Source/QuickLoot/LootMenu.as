@@ -65,6 +65,8 @@ class QuickLoot.LootMenu extends gfx.core.UIComponent
 	
 	public var showItemIcons = true;
 	
+	public var systemSettings = {};
+	
 	// public functions
 	
 	public function getVersion() {
@@ -75,8 +77,9 @@ class QuickLoot.LootMenu extends gfx.core.UIComponent
 		3: supports showItemIcons (+bugfix)
 		4: supports reinitialization
 		5: supports Completionist museum mode icons and diamond markers
+		6: supports property overrides
 		*/
-		return 5;
+		return 6;
 	}
 	
 	public function LootMenu() {
@@ -108,6 +111,10 @@ class QuickLoot.LootMenu extends gfx.core.UIComponent
 		
 		loadSetting(settings, "showItemIcons", "boolean");
 		
+		loadSetting(settings, "systemSettings", "object");
+		
+		applyOverrides();
+		
 		if(scale == 0) scale = 1;
 		
 		textColorDefault = parseInt(textColorStringDefault, 16);
@@ -134,6 +141,8 @@ class QuickLoot.LootMenu extends gfx.core.UIComponent
 		setOpacity(isEmpty ? alphaEmpty : alphaNormal);
 		updateScale();
 		updateScrollArrows();
+		
+		applyOverrides();
 	}
 	
 	// private functions
@@ -228,7 +237,9 @@ class QuickLoot.LootMenu extends gfx.core.UIComponent
 			var element = this[member];
 			
 			if(!(element instanceof MovieClip) && !(element instanceof TextField)) continue;
-			if(contains(nonTransparentElements, element)) {
+			
+			if(contains(nonTransparentElements, element) || contains(nonTransparentElements, element._name)) {
+				//QuickLoot.Utils.log("Nontransparent: " + element._name);
 				continue;
 			}
 			
@@ -252,6 +263,39 @@ class QuickLoot.LootMenu extends gfx.core.UIComponent
 			element._originalY = element._y;
 			element._originalW = element._width;
 			element._originalH = element._height;
+		}
+	}
+	
+	private function applyOverrides()
+	{
+		if(typeof(systemSettings.overrides) != "object") return;
+		
+		for(var key in systemSettings.overrides) {
+			var value = systemSettings.overrides[key];
+			var path = key.split(".");
+			var member = path.pop();
+			var current = _global;
+			
+			//QuickLoot.Utils.log("Processing override " + key + " = " + value);
+			
+			if(path[0] == "_root") {
+				current = _root;
+				path.splice(0, 1);
+			}
+			
+			for(var i = 0; i < path.length; i++) {
+				var name = path[i];
+				current = current[name];
+				
+				if(!current) {
+					//QuickLoot.Utils.log("Unable to resolve field " + name);
+					break;
+				}
+			}
+			
+			if(current) {
+				current[member] = value;
+			}
 		}
 	}
 }

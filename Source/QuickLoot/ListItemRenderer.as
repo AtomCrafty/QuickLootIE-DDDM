@@ -28,13 +28,13 @@
 	public var itemIcon: MovieClip;
 	public var itemName: TextField;
 	
-	public var bestInClassIcon: MovieClip;
-	public var stolenIcon: MovieClip;
-	public var readIcon: MovieClip;
+	public var iconBest: MovieClip;
+	public var iconStolen: MovieClip;
+	public var iconRead: MovieClip;
 	
-	public var enchantIcon: MovieClip;
-	public var knownEnchantIcon: MovieClip;
-	public var specialEnchantIcon: MovieClip;
+	public var iconEnchant: MovieClip;
+	public var iconEnchantKnown: MovieClip;
+	public var iconEnchantSpecial: MovieClip;
 	
 	public var artifactNew: MovieClip;
 	public var artifactFound: MovieClip;
@@ -72,13 +72,13 @@
 		itemIcon._visible = false;
 		itemName._visible = false;
 		
-		bestInClassIcon._visible = false;
-		stolenIcon._visible = false;
-		readIcon._visible = false;
+		iconBest._visible = false;
+		iconStolen._visible = false;
+		iconRead._visible = false;
 		
-		enchantIcon._visible = false;
-		knownEnchantIcon._visible = false;
-		specialEnchantIcon._visible = false;
+		iconEnchant._visible = false;
+		iconEnchantKnown._visible = false;
+		iconEnchantSpecial._visible = false;
 		
 		artifactNew._visible = false;
 		artifactFound._visible = false;
@@ -101,16 +101,19 @@
 		
 		_visible = true;
 		_hasData = true;
-		
-		// Call i4 if it is installed
-		skse.plugins.InventoryInjector.ProcessEntry(data);
+
+		if(!data.skyui_itemDataProcessed) {
+			// Call i4 if it is installed
+			skse.plugins.InventoryInjector.ProcessEntry(data);
+			data.skyui_itemDataProcessed = true;
+		}
 		
 		if(_lootMenu.showItemIcons) {
 			// Do this first, so the icon source can load
 			// in the background while we initialize the rest.
 			setItemIcon(data.iconSource, data.iconLabel, data.iconColor);
 			itemIcon._visible = true;
-			itemName._x = itemIcon._x + ICON_SIZE + ICON_SPACING;
+			itemName._x = itemIcon._x + itemIcon._width + ICON_SPACING;
 		}
 		else {
 			itemIcon._visible = false;
@@ -217,13 +220,13 @@
 		_selectedIcons = [];
 		_totalIconWidth = 0;
 		
-		selectIcon(bestInClassIcon, data.bestInClass);
-		selectIcon(stolenIcon, data.stolen);
-		selectIcon(readIcon, data.read);
+		selectIcon(iconBest, data.bestInClass);
+		selectIcon(iconStolen, data.stolen);
+		selectIcon(iconRead, data.read);
 		
-		selectIcon(knownEnchantIcon, data.knownEnchanted)
-		|| selectIcon(specialEnchantIcon, data.specialEnchanted)
-		|| selectIcon(enchantIcon, data.enchanted);
+		selectIcon(iconEnchantKnown, data.knownEnchanted)
+		|| selectIcon(iconEnchantSpecial, data.specialEnchanted)
+		|| selectIcon(iconEnchant, data.enchanted);
 		
 		selectIcon(artifactDisplayed, data.artifactDisplayed)
 		|| selectIcon(artifactFound, data.artifactFound)
@@ -242,7 +245,7 @@
 		
 		icon._visible = true;
 		_selectedIcons.push(icon);
-		_totalIconWidth += icon._width + ICON_SPACING;
+		_totalIconWidth += ICON_SPACING + icon._width;
 		return true;
 	}
 	
@@ -255,8 +258,9 @@
 		// Using a for in loop here iterates in reverse index order for some reason.
 		for(var i = 0; i < _selectedIcons.length; i++) {
 			var icon = _selectedIcons[i];
+			var offset = icon.getBounds(this).xMin - icon._x;
 			
-			icon._x = x + ICON_SPACING
+			icon._x = x + ICON_SPACING - offset;
 			x += ICON_SPACING + icon._width;
 		}
 	}
