@@ -85,8 +85,13 @@
 			textField._y = _yVal;
 
 			var scale: Number = textField.textHeight / icon._height;
-			icon._width *= scale;
-			icon._height *= scale;
+			//QuickLoot.Utils.log(icon + ", " + textField.textHeight + ", " + icon._height + ", " + scale);
+			
+			// For some reason the textHeight is 0 sometimes, so we need to catch that case here
+			if(scale > 0) {
+				icon._width *= scale;
+				icon._height *= scale;
+			}
 
 			//icon._y = textField._y + (icon._height - textField.textHeight) / 2;	// center icon
 			textField._x += icon._width + 7;
